@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.kinosoft.flutter_native_unity">
+
+    <application>
+        <activity
+            android:name=".NativeUnityActivity"
+            android:process=":unity">
+        </activity>
+    </application>
+
+</manifest>
