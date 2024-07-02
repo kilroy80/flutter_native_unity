@@ -38,7 +38,7 @@ class FlutterNativeUnityPlugin: FlutterPlugin, MethodCallHandler, ActivityAware 
 
             val classInstance = Class.forName("${context.packageName}.$name")
             val i = Intent(context, classInstance)
-            i.addFlags(FLAG_ACTIVITY_NEW_TASK)
+//            i.addFlags(FLAG_ACTIVITY_NEW_TASK)
             i.putExtra(NativeUnityActivity.EXTRA_INIT_MESSAGE, data)
 
             activity.startActivity(i)
