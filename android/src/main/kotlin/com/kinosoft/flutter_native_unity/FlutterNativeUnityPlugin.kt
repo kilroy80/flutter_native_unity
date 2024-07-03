@@ -3,7 +3,6 @@ package com.kinosoft.flutter_native_unity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -38,11 +37,13 @@ class FlutterNativeUnityPlugin: FlutterPlugin, MethodCallHandler, ActivityAware 
 
             val classInstance = Class.forName("${context.packageName}.$name")
             val i = Intent(context, classInstance)
-//            i.addFlags(FLAG_ACTIVITY_NEW_TASK)
             i.putExtra(NativeUnityActivity.EXTRA_INIT_MESSAGE, data)
 
             activity.startActivity(i)
             activity.overridePendingTransition(0, 0)
+
+//            showUnityActivity(classInstance, data)
+
         } else {
             result.notImplemented()
         }
@@ -63,5 +64,14 @@ class FlutterNativeUnityPlugin: FlutterPlugin, MethodCallHandler, ActivityAware 
     }
 
     override fun onDetachedFromActivity() {
+    }
+
+    private fun showUnityActivity(className: Class<*>, data: String) {
+        val intent: Intent = Intent(activity, className)
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.putExtra(NativeUnityActivity.EXTRA_INIT_MESSAGE, data)
+
+        activity.startActivity(intent)
+        activity.overridePendingTransition(0, 0)
     }
 }

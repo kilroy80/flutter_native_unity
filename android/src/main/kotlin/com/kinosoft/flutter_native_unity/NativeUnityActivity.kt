@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
@@ -135,14 +136,6 @@ open class NativeUnityActivity : Activity(), IUnityStreamData {
         }
     }
 
-    fun sendNativeMessage(
-        gameObj: String?,
-        method: String?,
-        arg: String?
-    ) {
-        UnityPlayer.UnitySendMessage(gameObj, method, arg)
-    }
-
     override fun onUnityMessage(message: String) {
         val unityMessage = message.replace("@UnityMessage@", "")
         val jsonObject = JSONObject(unityMessage)
@@ -157,7 +150,23 @@ open class NativeUnityActivity : Activity(), IUnityStreamData {
         Log.e(tag, name)
     }
 
-    fun exitActivity() {
+    // Unity Send Message (Original)
+    open fun sendNativeMessage(
+        gameObj: String?,
+        method: String?,
+        arg: String?
+    ) {
+        UnityPlayer.UnitySendMessage(gameObj, method, arg)
+    }
+
+    // Unity Activity Reorder
+    open fun showMainActivity(className: Class<*>) {
+        val intent = Intent(this, className)
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        startActivity(intent)
+    }
+
+    open fun exitActivity() {
         onDestroy()
         android.os.Process.killProcess(android.os.Process.myPid())
 
