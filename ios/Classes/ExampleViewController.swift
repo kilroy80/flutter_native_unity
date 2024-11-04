@@ -1,6 +1,6 @@
 import Foundation
 import flutter_native_unity
-import flutter_unity_widget
+//import flutter_unity_widget
 
 class ExampleViewController : NativeUnityViewController {
 

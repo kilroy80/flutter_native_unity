@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-import flutter_unity_widget
+//import flutter_unity_widget
 
 public protocol ViewControllerDataDelegate: AnyObject {
     func initMessage(message: String)
@@ -91,29 +91,29 @@ open class NativeUnityViewController: UIViewController, ViewControllerDataDelega
     public func closeViewController() {
         /// TODO : Check memory leak.
 //        GetUnityPlayerUtils().unload()
-        GetUnityPlayerUtils().pause()
+//        GetUnityPlayerUtils().pause()
         
         NotificationCenter.default.removeObserver(self)
         self.dismiss(animated: false)
     }
     
     func reattachUnityView() {
-        let unityView = GetUnityPlayerUtils().ufw?.appController()?.rootView
-        if (unityView == nil) {
-//            print("new Unity")
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                GetUnityPlayerUtils().createPlayer(completed: { [self] (view: UIView?) in
-                    if (view != nil) {
-                        showUnityView(view: view!)
-                    }
-                })
-            }
-        } else {
-//            print("re Unity")
-            showUnityView(view: unityView!)
-        }
-
-        GetUnityPlayerUtils().resume()
+//        let unityView = GetUnityPlayerUtils().ufw?.appController()?.rootView
+//        if (unityView == nil) {
+////            print("new Unity")
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                GetUnityPlayerUtils().createPlayer(completed: { [self] (view: UIView?) in
+//                    if (view != nil) {
+//                        showUnityView(view: view!)
+//                    }
+//                })
+//            }
+//        } else {
+////            print("re Unity")
+//            showUnityView(view: unityView!)
+//        }
+//
+//        GetUnityPlayerUtils().resume()
     }
     
     open override var prefersStatusBarHidden: Bool {
@@ -147,15 +147,15 @@ open class NativeUnityViewController: UIViewController, ViewControllerDataDelega
     
     // like flutter message
     open func sendMessage(unityMessage: String?) {
-        GetUnityPlayerUtils().postMessageToUnity(
-            gameObject: "UnityMessageManager", unityMethodName: "onFlutterMessage", unityMessage: unityMessage
-        )
+//        GetUnityPlayerUtils().postMessageToUnity(
+//            gameObject: "UnityMessageManager", unityMethodName: "onFlutterMessage", unityMessage: unityMessage
+//        )
     }
     
     open func sendMessage(gameObject: String?, unityMethodName: String?, unityMessage: String?) {
-        GetUnityPlayerUtils().postMessageToUnity(
-            gameObject: gameObject, unityMethodName: unityMethodName, unityMessage: unityMessage
-        )
+//        GetUnityPlayerUtils().postMessageToUnity(
+//            gameObject: gameObject, unityMethodName: unityMethodName, unityMessage: unityMessage
+//        )
     }
 }
 

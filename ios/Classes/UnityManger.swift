@@ -12,10 +12,23 @@ public protocol UnityManagerDelegate: AnyObject {
     func onUnityManagerMessage(message: String)
 }
 
-class UnityManager: NSObject {
+// 유니티로 전송할 메시지 struct 정의
+public struct UnityMessage {
+    let gameObject: String
+    let unityMethodName: String
+    let unityMessage: String
+    
+    public init(gameObject: String, unityMethodName: String, unityMessage: String){
+       self.gameObject = gameObject
+       self.unityMethodName = unityMethodName
+       self.unityMessage = unityMessage
+   }
+}
+
+open class UnityManager: NSObject {
     
     let TAG = "UnityManager"
-    static let shared = UnityManager()
+    public static let shared = UnityManager()
 
     private let dataBundleId: String = "com.unity3d.framework"
     private let frameworkPath: String = "/Frameworks/UnityFramework.framework"
@@ -28,18 +41,11 @@ class UnityManager: NSObject {
 
     override private init() {}
 
-    // 유니티로 전송할 메시지 struct 정의
-    struct UnityMessage {
-        let gameObject: String
-        let unityMethodName: String
-        let unityMessage: String
-    }
-
-    func setHostMainWindow(_ hostMainWindow: UIWindow?) {
+    open func setHostMainWindow(_ hostMainWindow: UIWindow?) {
         self.hostMainWindow = hostMainWindow
     }
 
-    func launchUnity() {
+    open func launchUnity() {
         
         // host main window가 있어야만 유니티가 뒤로 내려감.
         let window = UIApplication.shared.windows.first
@@ -90,7 +96,7 @@ class UnityManager: NSObject {
         }
     }
 
-    func closeUnity() {
+    open func closeUnity() {
         print(TAG, "closeUnity")
         unloadUnity()
         hostMainWindow?.makeKeyAndVisible()
@@ -111,33 +117,33 @@ class UnityManager: NSObject {
 //
 //            ufw?.setExecuteHeader(machineHeader)
             
-            let machineHeader = #dsohandle.assumingMemoryBound(to: MachHeader.self)
-            ufw!.setExecuteHeader(machineHeader)
+//            let machineHeader = #dsohandle.assumingMemoryBound(to: MachHeader.self)
+//            ufw!.setExecuteHeader(machineHeader)
         }
         return ufw
     }
 
-    func sendMessageToUnity(_ message: UnityMessage) {
+    open func sendMessageToUnity(_ message: UnityMessage) {
         ufw?.sendMessageToGO(withName: message.gameObject,
                              functionName: message.unityMethodName,
                              message: message.unityMessage)
     }
 
-    func unloadUnity() {
+    open func unloadUnity() {
         print(TAG, "unloadUnity")
         ufw?.unloadApplication()
     }
 }
 
 extension UnityManager: UnityFrameworkListener {
-    func unityDidUnload(_: Notification!) {
+    public func unityDidUnload(_: Notification!) {
         print(TAG, "unityDidUnload")
         ufw?.unregisterFrameworkListener(self)
         ufw = nil
         hostMainWindow?.makeKeyAndVisible()
     } // unityDidUnload
 
-    func unityDidQuit(_: Notification!) {
+    public func unityDidQuit(_: Notification!) {
         print(TAG, "unityDidQuit")
         ufw?.unregisterFrameworkListener(self)
         ufw = nil
