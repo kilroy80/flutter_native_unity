@@ -24,7 +24,7 @@ A new Flutter project.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-#   s.dependency 'flutter_unity_widget'
+  s.dependency 'flutter_unity_widget'
 
   s.xcconfig = {
      'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/../UnityLibrary" "${PODS_ROOT}/../.symlinks/flutter/ios-release" "${PODS_CONFIGURATION_BUILD_DIR}"',

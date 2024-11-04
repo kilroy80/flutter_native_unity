@@ -7,6 +7,7 @@
 
 import UIKit
 import UnityFramework
+import MachO
 
 public protocol UnityManagerDelegate: AnyObject {
     func onUnityManagerMessage(message: String)
@@ -117,8 +118,8 @@ open class UnityManager: NSObject {
 //
 //            ufw?.setExecuteHeader(machineHeader)
             
-//            let machineHeader = #dsohandle.assumingMemoryBound(to: MachHeader.self)
-//            ufw!.setExecuteHeader(machineHeader)
+           let machineHeader = #dsohandle.assumingMemoryBound(to: MachHeader.self)
+           ufw!.setExecuteHeader(machineHeader)
         }
         return ufw
     }
