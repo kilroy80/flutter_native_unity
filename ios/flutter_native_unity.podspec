@@ -23,7 +23,13 @@ A new Flutter project.
   s.swift_version = '5.0'
 
 #   s.framework = 'flutter_unity_widget'
+  s.frameworks = 'UnityFramework'
   s.dependency 'flutter_unity_widget'
+
+  s.xcconfig = {
+     'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/../UnityLibrary" "${PODS_ROOT}/../.symlinks/flutter/ios-release" "${PODS_CONFIGURATION_BUILD_DIR}"',
+     'OTHER_LDFLAGS' => '$(inherited) -framework UnityFramework ${PODS_LIBRARIES}'
+  }
 
   s.resources = ['Assets/**/*']
   s.resource_bundle = {
