@@ -119,7 +119,7 @@ open class UnityManager: NSObject {
 //            ufw?.setExecuteHeader(machineHeader)
             
            let machineHeader = #dsohandle.assumingMemoryBound(to: MachHeader.self)
-           ufw!.setExecuteHeader(machineHeader)
+           ufw?.setExecuteHeader(machineHeader)
         }
         return ufw
     }
