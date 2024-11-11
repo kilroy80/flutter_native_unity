@@ -90,6 +90,8 @@ open class UnityManager: NSObject {
 //                    eventType: DataStreamEventTypes.OnUnityMessage,
 //                    data: msg))
         } else {
+            self.unityManagerDelegate?.onUnityManagerMessage(message: "")
+
 //            notifyFlutter(
 //                data: DataStreamEvent(
 //                    eventType: DataStreamEventTypes.OnUnityMessage,
@@ -100,6 +102,8 @@ open class UnityManager: NSObject {
     open func closeUnity() {
         print(TAG, "closeUnity")
         unloadUnity()
+
+        // main view visible
         hostMainWindow?.makeKeyAndVisible()
     }
   
@@ -142,12 +146,12 @@ extension UnityManager: UnityFrameworkListener {
         ufw?.unregisterFrameworkListener(self)
         ufw = nil
         hostMainWindow?.makeKeyAndVisible()
-    } // unityDidUnload
+    }
 
     public func unityDidQuit(_: Notification!) {
         print(TAG, "unityDidQuit")
         ufw?.unregisterFrameworkListener(self)
         ufw = nil
         hostMainWindow?.makeKeyAndVisible()
-    } // unityDidQuit
+    }
 }
