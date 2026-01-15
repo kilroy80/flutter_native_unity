@@ -17,7 +17,7 @@ dependencies:
   flutter_unity_widget:
     git:
       url: https://github.com/kilroy80/flutter-unity-view-widget
-      ref: '23625ce926b26ef5edfef65df64328e638c1e38d'
+      ref: '6bf900b5c297d3bf6cbcca8af32c0af2dbe8d7ae'
 
 dev_dependencies:
   flutter_test:

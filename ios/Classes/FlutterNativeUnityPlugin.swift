@@ -1,6 +1,6 @@
 import Flutter
 import UIKit
-import flutter_unity_widget
+// import flutter_unity_widget
 
 public class FlutterNativeUnityPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
