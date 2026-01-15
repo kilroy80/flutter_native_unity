@@ -11,7 +11,7 @@ import com.kinosoft.flutter_native_unity.IUnityStreamData
 import com.kinosoft.flutter_native_unity.UnityMessageParser
 import org.json.JSONObject
 
-class UnityActivity : NativeUnityActivity(), IUnityStreamData {
+class ExampleUnityActivity : NativeUnityActivity(), IUnityStreamData {
 
     private val tag: String = UnityActivity::class.java.simpleName
 
