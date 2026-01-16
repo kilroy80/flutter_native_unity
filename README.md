@@ -1,36 +1,38 @@
 # flutter_native_unity
 
-Flutter에서 **Unity**를 네이티브 방식으로 임베드하기 위한 **보조 플러그인**입니다.
+[한국어](README.ko.md)
 
-본 플러그인은 **단독 사용을 위한 플러그인이 아니며**,  
-**flutter_unity_widget** 플러그인을 사용할 때 발생하는 문제점(메모리 누수, 터치 이벤트 불안정 등)을 보완하기 위한 **보조 역할**을 합니다.
+A **supplementary plugin** for embedding **Unity** into Flutter applications in a **native manner**.
 
-> 현재 메시지 통신은 **flutter_unity_widget** 패키지를 그대로 사용하며, Android / iOS 네이티브 코드로 지원합니다.
+This plugin is **not intended to be used standalone**.  
+It is designed to **complement** the **flutter_unity_widget** plugin by addressing common issues such as **memory leaks** and **unstable touch events**.
 
----
-
-## 목적
-
-- Flutter 앱 내에서 Unity 화면을 보다 안정적으로 표시하기 위한 **네이티브 레벨 지원**
-- Android에서 `UnityActivity`를 별도 프로세스(`:unity`)로 실행하여 메인 앱 충돌 최소화
-- iOS에서 `UIViewController` 기반의 별도 화면으로 실행하여 메인 앱 충돌 최소화
-- (향후 목표)
-    - 양방향 통신 브릿지 강화
-    - **flutter_unity_widget** 의존성 제거
-    - 단독 플러그인으로 전환
+> Currently, message communication continues to rely on the **flutter_unity_widget** package, while native-level support is provided for Android and iOS.
 
 ---
 
-## 사용 방식
+## Purpose
 
-### 1. 의존성 추가 (pubspec.yaml)
+- Provide **native-level support** for more stable Unity rendering inside Flutter apps
+- On **Android**, run `UnityActivity` in a **separate process** (`:unity`) to minimize crashes in the main app
+- On **iOS**, run Unity in a **separate UIViewController-based screen** to minimize crashes in the main app
+- (Future goals)
+  - Enhance the **bi-directional communication bridge**
+  - Remove dependency on **flutter_unity_widget**
+  - Transition into a **standalone plugin**
+
+---
+
+## Usage
+
+### 1. Add Dependencies (`pubspec.yaml`)
 
 ```yaml
 dependencies:
-  flutter_unity_widget: # 또는 최신 버전
+  flutter_unity_widget: # or the latest version
     git:
       url: https://github.com/kilroy80/flutter-unity-view-widget
-      ref: '6bf900b5c297d3bf6cbcca8af32c0af2dbe8d7ae'   
+      ref: '6bf900b5c297d3bf6cbcca8af32c0af2dbe8d7ae'
 
   flutter_native_unity:
     git:
@@ -39,31 +41,34 @@ dependencies:
 
 ---
 
-### 2. 기타 설정
+### 2. Additional Configuration
 
-[flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) 플러그인 페이지를 참고하여 동일하게 설정합니다.
+Follow the same configuration steps described on the  
+[flutter_unity_widget](https://pub.dev/packages/flutter_unity_widget) plugin page.
 
 ---
 
-### 3. Android 설정
+### 3. Android Setup
 
-#### App 레벨 `build.gradle` 또는 `build.gradle.kts`에 의존성 추가
+#### Add Dependency in App-level `build.gradle` or `build.gradle.kts`
 
 ```groovy
 // build.gradle
 dependencies {
     compileOnly rootProject.findProject(":flutter_native_unity")
 }
+```
 
+```kotlin
 // build.gradle.kts
 dependencies {
-  rootProject.findProject(":flutter_native_unity")?.let {
-    compileOnly(it)
-  }
+    rootProject.findProject(":flutter_native_unity")?.let {
+        compileOnly(it)
+    }
 }
 ```
 
-#### App 레벨 `AndroidManifest.xml`에 Android Activity 추가
+#### Add Activity in App-level `AndroidManifest.xml`
 
 ```xml
 <application>
@@ -73,29 +78,28 @@ dependencies {
 </application>
 ```
 
-> ⚠️ 주의  
-`${plugin-path}/android/libs` 경로에 있는 `unity-classes.jar` 파일은  
-**빌드한 Unity 버전에 맞는 jar 파일로 반드시 교체해야 합니다.**  
-버전이 맞지 않을 경우 Android 앱이 실행 즉시 종료됩니다.
+> ⚠️ **Important**  
+> The `unity-classes.jar` file located at `${plugin-path}/android/libs` **must be replaced** with the JAR file that matches your **Unity build version**.  
+> If the versions do not match, the Android app may **crash immediately on launch**.
 
 ---
 
-### 4. iOS 설정
+### 4. iOS Setup
 
-iOS는 별도의 추가 설정이 필요하지 않습니다.
+No additional configuration is required for iOS.
 
 ---
 
-## 실행 코드
+## Runtime Code
 
 ### Flutter
 
-`FlutterNativeUnity().launch()` 함수 설명
+`FlutterNativeUnity().launch()` function parameters:
 
 - `initData`  
-  Activity 또는 ViewController 초기화 시 필요한 데이터를 **JSON 문자열**로 전달
+  A **JSON string** containing initialization data passed when the Activity or ViewController is created
 - `className`  
-  네이티브에서 실행할 Activity(Android) 또는 ViewController(iOS)의 클래스 이름
+  The class name of the native **Activity (Android)** or **ViewController (iOS)** to launch
 
 ```dart
 import 'package:flutter_native_unity/flutter_native_unity.dart';
@@ -117,22 +121,22 @@ MaterialButton(
 
 ### Android
 
-`${plugin-path}/android/src` 경로에 있는  
-**NativeUnityActivity** 클래스를 상속받아 Activity를 Kotlin 또는 Java로 직접 구현합니다.
+Under `${plugin-path}/android/src`,  
+extend the **NativeUnityActivity** class and implement your own Activity in **Kotlin or Java**.
 
-자세한 내용은 예제 코드 **ExampleUnityActivity**를 참고하세요.
+Refer to the **ExampleUnityActivity** sample code for details.
 
 ---
 
 ### iOS
 
-`${plugin-path}/ios/Classes` 경로에 있는  
-**NativeUnityViewController** 클래스를 상속받아 ViewController를 Swift로 직접 구현합니다.
+Under `${plugin-path}/ios/Classes`,  
+extend the **NativeUnityViewController** class and implement your own ViewController in **Swift**.
 
-자세한 내용은 예제 코드 **ExampleViewController**를 참고하세요.
+Refer to the **ExampleViewController** sample code for details.
 
 ---
 
-## 라이선스
+## License
 
 MIT License
