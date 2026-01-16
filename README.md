@@ -27,7 +27,7 @@ Flutter에서 **Unity**를 네이티브 방식으로 임베드하기 위한 **�
 
 ```yaml
 dependencies:
-    flutter_unity_widget: # 또는 최신 버전
+  flutter_unity_widget: # 또는 최신 버전
     git:
       url: https://github.com/kilroy80/flutter-unity-view-widget
       ref: '6bf900b5c297d3bf6cbcca8af32c0af2dbe8d7ae'   
@@ -47,20 +47,28 @@ dependencies:
 
 ### 3. Android 설정
 
-#### App 레벨 `build.gradle`에 의존성 추가
+#### App 레벨 `build.gradle` 또는 `build.gradle.kts`에 의존성 추가
 
 ```groovy
+// build.gradle
 dependencies {
     compileOnly rootProject.findProject(":flutter_native_unity")
 }
+
+// build.gradle.kts
+dependencies {
+  rootProject.findProject(":flutter_native_unity")?.let {
+    compileOnly(it)
+  }
+}
 ```
 
-#### App 레벨 `AndroidManifest.xml`에 Activity 추가
+#### App 레벨 `AndroidManifest.xml`에 Android Activity 추가
 
 ```xml
 <application>
     <activity
-        android:name=".UnityActivity"
+        android:name=".ExampleUnityActivity"
         android:process=":unity" />
 </application>
 ```
@@ -90,7 +98,6 @@ iOS는 별도의 추가 설정이 필요하지 않습니다.
   네이티브에서 실행할 Activity(Android) 또는 ViewController(iOS)의 클래스 이름
 
 ```dart
-import 'dart:io';
 import 'package:flutter_native_unity/flutter_native_unity.dart';
 
 MaterialButton(
